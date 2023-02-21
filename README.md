@@ -16,8 +16,11 @@
 ### `projectKey`
 **Required** The key of Jira project.
 
-### `fileName`
-**Required** The file name of changelog.
+### `output`
+**Required** The file path of output changelog.
+
+### `path`
+**Required** The file path of input changelog.
 
 ## Outputs
 

@@ -14,6 +14,12 @@ inputs:
   projectKey:
     description: 'The key of Jira project'
     required: true
+  path:
+    description: 'The file path of input changelog'
+    required: false
+  output:
+    description: 'The file path of output changelog'
+    required: false
 runs:
   using: 'node12'
   main: 'index.js'
