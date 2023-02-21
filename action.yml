@@ -1,0 +1,19 @@
+name: 'Jira changelog generator'
+description: 'An action to generate changelog via Jira issues'
+author: 'Lutas'
+inputs:
+  host:
+    description: 'The host of Jira Project'
+    required: true
+  userName:
+    description: 'The user name of Jira account'
+    required: true
+  password:
+    description: 'The password or token of Jira account'
+    required: true
+  projectKey:
+    description: 'The key of Jira project'
+    required: true
+runs:
+  using: 'node12'
+  main: 'index.js'
