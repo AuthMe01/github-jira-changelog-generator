@@ -5,10 +5,11 @@
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "prepare": "ncc build index.js --license LICENSE"
   },
   "author": "Lutas",
-  "license": "ISC",
+  "license": "MIT",
   "dependencies": {
     "@actions/core": "^1.10.0",
     "jira-client": "^8.2.2"
