@@ -57457,7 +57457,7 @@ const core = __nccwpck_require__(6024);
 // Input
 const host = core.getInput('host', { required: true });
 const userName = core.getInput('userName', { required: true });
-const password = core.getInput('multilineInputName', { required: true });
+const password = core.getInput('password', { required: true });
 const projectKey = core.getInput('projectKey', { required: true });
 var path = core.getInput('path', { required: false });
 if (!path) {
