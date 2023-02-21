@@ -125,14 +125,14 @@ function generate(issueMap) {
       }
 
       if (status == Status.start) {
-        pushToPayload(line);
+        pushToPayload(line, payload);
       } else if (status == Status.stop) {
         fs.appendFileSync(output, `${line}\n`);
       }
   });
 }
 
-function pushToPayload(line) {
+function pushToPayload(line, payload) {
   if (!line) {
     return;
   }
