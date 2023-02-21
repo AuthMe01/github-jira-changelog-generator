@@ -57454,7 +57454,7 @@ const readline = __nccwpck_require__(4521);
 const JiraApi = __nccwpck_require__(9142);
 const core = __nccwpck_require__(6024);
 
-// Input
+// Action inputs
 const host = core.getInput('host', { required: true });
 const userName = core.getInput('userName', { required: true });
 const password = core.getInput('password', { required: true });
@@ -57576,36 +57576,43 @@ function generate(issueMap) {
       }
 
       if (status == Status.start) {
-        var nums = line.match(ticketNumberRegex);
-        if (!nums) {
-          nums = [];
-        }
-        var type = line.match(typeRegex);
-        if (type) {
-          type = type[1];
-        } else {
-          type = 'others';
-        }
-        switch (type) {
-          case 'feat':
-          case 'feature':
-            payload.features.push({ nums: nums, message: line });
-            break;
-          case 'bugfix':
-          case 'fix':
-            payload.fixes.push({ nums: nums, message: line });
-            break;
-          case 'breaking-changes':
-            payload.breakingChanges.push({ nums: nums, message: line });
-            break;
-          default:
-            payload.others.push({ nums: nums, message: line });
-            break;
-        }
+        pushToPayload(line);
       } else if (status == Status.stop) {
         fs.appendFileSync(output, `${line}\n`);
       }
   });
+}
+
+function pushToPayload(line) {
+  if (!line) {
+    return;
+  }
+  var nums = line.match(ticketNumberRegex);
+  if (!nums) {
+    nums = [];
+  }
+  var type = line.match(typeRegex);
+  if (type) {
+    type = type[1];
+  } else {
+    type = 'others';
+  }
+  switch (type) {
+    case 'feat':
+    case 'feature':
+      payload.features.push({ nums: nums, message: line });
+      break;
+    case 'bugfix':
+    case 'fix':
+      payload.fixes.push({ nums: nums, message: line });
+      break;
+    case 'breaking-changes':
+      payload.breakingChanges.push({ nums: nums, message: line });
+      break;
+    default:
+      payload.others.push({ nums: nums, message: line });
+      break;
+  }
 }
 
 function writePayload(payload, issueMap) {
