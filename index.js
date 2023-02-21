@@ -8,9 +8,13 @@ const host = core.getInput('host', { required: true });
 const userName = core.getInput('userName', { required: true });
 const password = core.getInput('multilineInputName', { required: true });
 const projectKey = core.getInput('projectKey', { required: true });
-var fileName = core.getInput('fileName', { required: false });
-if (!fileName) {
-  fileName = 'CHANGELOG.md';
+var path = core.getInput('path', { required: false });
+if (!path) {
+  path = 'CHANGELOG.md';
+}
+var output = core.getInput('output', { required: false });
+if (!output) {
+  output = 'CHANGELOG-JIRA.txt';
 }
 
 const jira = new JiraApi({
@@ -34,7 +38,7 @@ const Status = {
 };
 
 function start() {
-  const fileStream = fs.createReadStream('history.md');
+  const fileStream = fs.createReadStream(path);
   const reader = readline.createInterface({
     input: fileStream,
     crlfDelay: Infinity
@@ -96,7 +100,7 @@ function start() {
 }
   
 function generate(issueMap) {
-  const fileStream = fs.createReadStream('history.md');
+  const fileStream = fs.createReadStream(path);
   const reader = readline.createInterface({
     input: fileStream,
     crlfDelay: Infinity
@@ -148,7 +152,7 @@ function generate(issueMap) {
             break;
         }
       } else if (status == Status.stop) {
-        fs.appendFileSync('message.txt', `${line}\n`);
+        fs.appendFileSync(output, `${line}\n`);
       }
   });
 }
@@ -171,7 +175,7 @@ function writePayload(payload, issueMap) {
     message += '\n**Others:**\n';
     message += getItemsMessage(payload.others, issueMap);
   }
-  fs.appendFileSync('message.txt', message);
+  fs.appendFileSync(output, message);
 }
 
 function getItemsMessage(items, issueMap) {

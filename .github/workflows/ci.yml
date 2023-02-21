@@ -5,19 +5,30 @@ on: push
 jobs:
   build:
     name: "Changelog generation"
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-20.04
     steps:
       - name: "Check-out"
         uses: actions/checkout@v2
-      - name: "Generate full changelog"
+      - name: "Generate Github changelog"
         uses: heinrichreimer/github-changelog-generator-action@v2.3
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           output: CHANGELOG-G.md
-      - name: "Print changelog to console"
+      - name: "Print Github changelog to console"
         run: cat CHANGELOG-G.md
+      - name: "Generate Jira changelog"
+        uses: ./
+        with:
+          host: 'authme01.atlassian.net'
+          userName: 'lutas.lin@authme.com'
+          password: ${{ secrets.JIRA_TOKEN }}
+          projectKey: 'PROD'
+          path: 'CHANGELOG-G.md'
+          output: 'CHANGELOG.md'
+      - name: "Print Jira changelog to console"
+        run: cat CHANGELOG.md
       - name: "Upload changelog"
         uses: actions/upload-artifact@v1.0.0
         with:
           name: "Changelog"
-          path: CHANGELOG-G.md
+          path: CHANGELOG.md
