@@ -9,10 +9,11 @@ jobs:
     steps:
       - name: "Check-out"
         uses: actions/checkout@v2
-      - name: "Generate Github changelog"
+      - name: "Install git-chglog"
         uses: actions/install-git-chglog@v1
         with:
           version: 0.15.4
+      - name: "Generate Github changelog"
         run: git-chglog -o CHANGELOG.md --next-tag 2.0.0
       - name: "Print Github changelog to console"
         run: cat CHANGELOG-G.md
