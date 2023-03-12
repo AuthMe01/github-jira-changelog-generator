@@ -12,7 +12,7 @@ jobs:
       - name: "Install git-chglog"
         uses: craicoverflow/install-git-chglog@v1.0.0
         with:
-          version: 0.15.4
+          version: "v0.15.4"
       - name: "Generate Github changelog"
         run: git-chglog -o CHANGELOG.md --next-tag 2.0.0
       - name: "Print Github changelog to console"
