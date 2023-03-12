@@ -9,22 +9,25 @@ jobs:
     steps:
       - name: "Check-out"
         uses: actions/checkout@v2
-      - name: "Generate Github changelog"
-        uses: heinrichreimer/github-changelog-generator-action@v2.3
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          output: CHANGELOG-G.md
+          fetch-depth: 0
+      - name: "Install git-chglog"
+        uses: craicoverflow/install-git-chglog@v1.0.0
+        with:
+          version: "v0.15.4"
+      - name: "Generate Github changelog"
+        run: git-chglog -o CHANGELOG-G.md
       - name: "Print Github changelog to console"
         run: cat CHANGELOG-G.md
       - name: "Generate Jira changelog"
         uses: ./
         with:
-          host: 'authme01.atlassian.net'
-          userName: 'lutas.lin@authme.com'
+          host: "authme01.atlassian.net"
+          userName: "lutas.lin@authme.com"
           password: ${{ secrets.JIRA_TOKEN }}
-          projectKey: 'PROD'
-          path: 'CHANGELOG-G.md'
-          output: 'CHANGELOG.md'
+          projectKey: "PROD"
+          path: "CHANGELOG-G.md"
+          output: "CHANGELOG.md"
       - name: "Print Jira changelog to console"
         run: cat CHANGELOG.md
       - name: "Upload changelog"
