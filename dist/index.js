@@ -57599,7 +57599,6 @@ function pushToPayload(line, payload) {
   if (!line) {
     return;
   }
-  line = line.replace(/^(.*?\bfrom\s)([^\/]*\/)/, '- ');
   var nums = line.match(ticketNumberRegex);
   if (!nums) {
     nums = [];
