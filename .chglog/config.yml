@@ -1,0 +1,8 @@
+style: github
+template: CHANGELOG.tpl.md
+info:
+  title: CHANGELOG
+  repository_url: https://github.com/AuthMe01/github-jira-changelog-generator
+options:
+  commits:
+  commit_groups:
