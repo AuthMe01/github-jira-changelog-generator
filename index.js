@@ -8,6 +8,7 @@ const host = core.getInput('host', { required: true });
 const userName = core.getInput('userName', { required: true });
 const password = core.getInput('password', { required: true });
 const projectKey = core.getInput('projectKey', { required: true });
+
 var path = core.getInput('path', { required: false });
 if (!path) {
   path = 'CHANGELOG.md';
@@ -26,9 +27,9 @@ const jira = new JiraApi({
   strictSSL: true
 });
 
-const mergedPatern = '**Merged pull requests:**';
+const mergedPatern = '### Pull Requests';
 const ticketNumberRegex = new RegExp(`${projectKey}-\\d+`, 'g');
-const ticketNumberPatern = new RegExp(`\\\\#${projectKey}-\\d+`, 'g');
+const ticketNumberPatern = new RegExp(`#${projectKey}-\\d+`, 'g');
 const typeRegex = /^- (feat|feature|bugfix|fix|breaking-changes)/i;
 const typePatern = /^- (feat|feature|bugfix|fix|breaking-changes)\//i;
 const Status = {
@@ -38,6 +39,7 @@ const Status = {
 };
 
 function start() {
+  removeChangelogIfExists();
   const fileStream = fs.createReadStream(path);
   const reader = readline.createInterface({
     input: fileStream,
@@ -98,6 +100,16 @@ function start() {
         });
   });
 }
+
+function removeChangelogIfExists() {
+  fs.access(output, fs.constants.F_OK, (err) => {
+    if (err) {
+      console.log('changelog 檔案不存在');
+    } else {
+      fs.unlinkSync(output);
+    }
+  });
+}
   
 function generate(issueMap) {
   const fileStream = fs.createReadStream(path);
@@ -136,6 +148,7 @@ function pushToPayload(line, payload) {
   if (!line) {
     return;
   }
+  line = line.replace(/^(.*?\bfrom\s)([^\/]*\/)/, '- ');
   var nums = line.match(ticketNumberRegex);
   if (!nums) {
     nums = [];
