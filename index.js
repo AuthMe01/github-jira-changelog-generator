@@ -30,8 +30,8 @@ const jira = new JiraApi({
 const mergedPatern = '### Pull Requests';
 const ticketNumberRegex = new RegExp(`${projectKey}-\\d+`, 'g');
 const ticketNumberPatern = new RegExp(`#${projectKey}-\\d+`, 'g');
-const typeRegex = /^- (feat|feature|bugfix|fix|breaking-changes)/i;
-const typePatern = /^- (feat|feature|bugfix|fix|breaking-changes)\//i;
+const typeRegex = /^(\*|-) (feat|feature|bugfix|fix|breaking-changes)/i;
+const typePatern = /^(\*|-) (feat|feature|bugfix|fix|breaking-changes)\//i;
 const Status = {
   ready: 'ready',
   start: 'start',
@@ -154,7 +154,7 @@ function pushToPayload(line, payload) {
   }
   var type = line.match(typeRegex);
   if (type) {
-    type = type[1];
+    type = type[2];
   } else {
     type = 'others';
   }
